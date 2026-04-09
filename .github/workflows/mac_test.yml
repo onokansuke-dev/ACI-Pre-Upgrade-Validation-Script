@@ -1,0 +1,25 @@
+name: Mac Script Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # 手動で実行できるようにするボタンを追加
+
+jobs:
+  test-on-mac:
+    runs-on: macos-latest # ここで本物のMac環境を指定
+    
+    steps:
+      - name: リポジトリのチェックアウト
+        uses: actions/checkout@v4
+
+      - name: スクリプトに権限を付与
+        run: chmod +x test.sh
+
+      - name: スクリプトをsudoで実行
+        run: sudo ./test.sh
+
+      - name: 生成されたJSONファイルの中身を確認
+        run: |
+          # フォルダ内にある最新のJSONを表示
+          cat /usr/local/corp/inventory_*.json
